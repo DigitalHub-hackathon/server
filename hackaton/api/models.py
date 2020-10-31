@@ -2,9 +2,9 @@ from django.db import models
 
 
 class Organization(models.Model):
-    id = models.IntegerField(verbose_name='id')
+    id = models.IntegerField(verbose_name='id', primary_key=True)
     name = models.TextField(verbose_name='Название')
-    streat = models.TextField(verbose_name='Улица')
+    street = models.TextField(verbose_name='Улица')
     metro = models.TextField(verbose_name='Метро')
 
     def __str__(self):
@@ -16,7 +16,8 @@ class Organization(models.Model):
 
 
 class Group(models.Model):
-    id = models.IntegerField(verbose_name='id')
+    id = models.IntegerField(verbose_name='id', primary_key=True)
+    organization = models.ManyToManyField(Organization, verbose_name='Организация')
     name = models.TextField(verbose_name='Название')
     finance = models.TextField(verbose_name='Оплата')
     schedule = models.TextField(verbose_name='Расписание')
