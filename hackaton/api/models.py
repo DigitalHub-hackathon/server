@@ -16,11 +16,21 @@ class Organization(models.Model):
 
 
 class Group(models.Model):
+    PRICE = (
+        (0, 'Бесплатно'),
+        (1, 'Платно'),
+    )
+
+    TYPE_SCHEDULE = (
+        (0, 'Общее'),
+        (1, 'Индивидуальное')
+    )
+
     id = models.IntegerField(verbose_name='id', primary_key=True)
-    organization = models.ManyToManyField(Organization, verbose_name='Организация')
+    organization = models.ForeignKey(Organization, verbose_name='Организация', on_delete=models.CASCADE)
     name = models.TextField(verbose_name='Название')
-    finance = models.TextField(verbose_name='Оплата')
-    schedule = models.TextField(verbose_name='Расписание')
+    finance = models.IntegerField(choices=PRICE, verbose_name='Оплата')
+    schedule = models.IntegerField(choices=TYPE_SCHEDULE, verbose_name='Расписание')
     duration = models.IntegerField(verbose_name='Длительность обучения')
 
     def __str__(self):

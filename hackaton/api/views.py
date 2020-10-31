@@ -13,3 +13,10 @@ class OrganizationView(viewsets.ViewSet):
     def all(self, request):
         queryset = models.Organization.objects.all()
         return Response(serializers.OrganizationSerializers(queryset))
+
+
+class GroupView(viewsets.ViewSet):
+    @method_decorator(cache_page(60*60*2))
+    def all(self, request, page):
+        queryset = models.Group.objects.all()[page*100:(page+1)*100]
+        return Response(serializers.GroupSerializers(queryset))
