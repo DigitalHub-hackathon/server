@@ -39,3 +39,29 @@ class Group(models.Model):
     class Meta:
         verbose_name = u'Кружок'
         verbose_name_plural = u'Кружки'
+
+
+class Event(models.Model):
+    id = models.IntegerField(verbose_name='id', primary_key=True)
+    name = models.TextField(verbose_name='Название')
+    status = models.TextField(verbose_name='Статус')
+    price = models.TextField(verbose_name='Стоимость')
+    type = models.TextField(verbose_name='Тип')
+    direction = models.TextField(verbose_name='Направленность')
+    start_date = models.TextField(verbose_name='Дата начала')
+    start_time = models.TextField(verbose_name='Время начала')
+    stop_date = models.TextField(verbose_name='Дата окончания')
+    stop_time = models.TextField(verbose_name='Время окончания')
+    online = models.BooleanField(verbose_name='Проводится онлайн')
+    place = models.TextField(verbose_name='Место проведения')
+    area = models.TextField(verbose_name='Район')
+    health_limitations = models.BooleanField(verbose_name='Доступно для лиц с ОВЗ')
+    censorship = models.TextField(verbose_name='Возрастной ценз')
+
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = u'Мероприятие'
+        verbose_name_plural = u'Мероприятия'

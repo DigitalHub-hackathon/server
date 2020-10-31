@@ -49,3 +49,35 @@ def GroupSerializers(groups):
             'duration': group.duration
         })
     return result
+
+
+@lru_cache(maxsize=1024)
+def EventSerializers(events):
+
+    #f = open('api/Мероприятия.csv', 'r')
+    #for l in f.readlines():
+    #    id, name, status, price, type, direction, start_date, start_time, stop_date, stop_time, online, place, area, health_limitations, censorship =  l.split('%')
+    #    models.Event(id=id, name=name, status=status, price=price, type=type, direction=direction, start_date=start_date, start_time=start_time, stop_date=stop_date, stop_time=stop_time, online=online, place=place, area=area, health_limitations=health_limitations, censorship=censorship).save()
+    #    print(name) 
+    #f.close()
+
+    result = []
+    for event in events:
+        result.append({
+            'id': event.id,
+            'name': event.name,
+            'status': event.status,
+            'price': event.price,
+            'type': event.type,
+            'direction': event.direction,
+            'start_date': event.start_date,
+            'start_time': event.start_time,
+            'stop_date': event.stop_date,
+            'stop_time': event.stop_time,
+            'online': event.online,
+            'place': event.place,
+            'area': event.area,
+            'health_limitations': event.health_limitations,
+            'censorship': event.censorship
+        })
+    return result
