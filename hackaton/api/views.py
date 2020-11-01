@@ -8,7 +8,7 @@ import api.models as models
 import api.serializers as serializers
 
 import api.predict as predict
-import api.predict_events as
+import api.predict_events as predict_events
 import api.predict_books as predict_books
 
 
