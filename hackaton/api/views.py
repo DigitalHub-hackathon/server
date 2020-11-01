@@ -90,22 +90,22 @@ class PredictBookssView(viewsets.ViewSet):
 class PredictEventView(viewsets.ViewSet):
     def all(self, request):
         ids = list(map(int, request.GET.get('likes').split(' ')))
-         result = []
-         for id in ids:
-             index = predict_events.meropr[predict_events.meropr['id'] == id].index
-             tmp = predict_events.cosine_sim[index]
-             if not len(tmp):
-                 continue
-             similar_movies = list(enumerate(tmp[0]))
-             sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
- 
-             element = sorted_similar_movies[0]
- 
-             id_yslygi = int(predict_events.meropr.iloc[element[0]]['id'])
-             event = models.Event.objects.filter(id=id_yslygi)
- 
-             s = serializers.EventSerializers(event)[0]
-             if s not in result:
-                 result.append(s)
- 
-         return Response(result)
+        result = []
+        for id in ids:
+            index = predict_events.meropr[predict_events.meropr['id'] == id].index
+            tmp = predict_events.cosine_sim[index]
+            if not len(tmp):
+                continue
+            similar_movies = list(enumerate(tmp[0]))
+            sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
+
+            element = sorted_similar_movies[0]
+
+            id_yslygi = int(predict_events.meropr.iloc[element[0]]['id'])
+            event = models.Event.objects.filter(id=id_yslygi)
+
+            s = serializers.EventSerializers(event)[0]
+            if s not in result:
+                result.append(s)
+
+        return Response(result)
