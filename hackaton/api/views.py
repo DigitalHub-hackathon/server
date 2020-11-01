@@ -6,9 +6,8 @@ from django.views.decorators.cache import cache_page
 
 import api.models as models
 import api.serializers as serializers
-import pandas as pd
+import api.predict as predict
 
-from joblib import load
 
 class OrganizationView(viewsets.ViewSet):
     @method_decorator(cache_page(60*60*2))
@@ -32,8 +31,18 @@ class EventView(viewsets.ViewSet):
 
 
 class PredictGroupsView(viewsets.ViewSet):
-    #clf_rf = load('api/weight_groups.csv')
-    #y = pd.read_csv(f'api/answer.csv')
-
+    
     def all(self, request):
-        return Response({"1": 1})
+        ids = list(map(int, request.GET.get('likes').split(' ')))
+        result = []
+        for id in ids:
+            index = predict.students[predict.students['id_услуги'] == id].index
+            similar_movies = list(enumerate(predict.cosine_sim[index][0]))
+            sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
+            element = sorted_similar_movies[0]
+            print(element)
+            id_yslygi = int(predict.students.iloc[element[0]]['id_услуги'])
+            group = models.Group.objects.filter(id=id_yslygi)
+            result += serializers.GroupSerializers(group)
+
+        return Response(result)

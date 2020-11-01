@@ -31,7 +31,7 @@ class Group(models.Model):
     name = models.TextField(verbose_name='Название')
     finance = models.IntegerField(choices=PRICE, verbose_name='Оплата')
     schedule = models.IntegerField(choices=TYPE_SCHEDULE, verbose_name='Расписание')
-    duration = models.IntegerField(verbose_name='Длительность обучения')
+    duration = models.TextField(verbose_name='Длительность обучения')
 
     def __str__(self):
         return self.name
