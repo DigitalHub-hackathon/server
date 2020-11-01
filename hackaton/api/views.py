@@ -44,9 +44,13 @@ class PredictGroupsView(viewsets.ViewSet):
             similar_movies = list(enumerate(tmp[0]))
             sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
             element = sorted_similar_movies[0]
+            
             id_yslygi = int(predict.students.iloc[element[0]]['id_услуги'])
             group = models.Group.objects.filter(id=id_yslygi)
-            result += serializers.GroupSerializers(group)
+
+            s = serializers.GroupSerializers(group)[0]
+            if s not in result:
+                result.append(s)
 
         return Response(result)
 
@@ -62,10 +66,14 @@ class PredictEventView(viewsets.ViewSet):
                 continue
             similar_movies = list(enumerate(tmp[0]))
             sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
+
             element = sorted_similar_movies[0]
 
             id_yslygi = int(predict_events.meropr.iloc[element[0]]['id'])
             event = models.Event.objects.filter(id=id_yslygi)
-            result += serializers.EventSerializers(event)
+
+            s = serializers.EventSerializers(event)[0]
+            if s not in result:
+                result.append(s)
 
         return Response(result)
