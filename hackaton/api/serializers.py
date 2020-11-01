@@ -24,6 +24,17 @@ def OrganizationSerializers(organizations):
 
 @lru_cache(maxsize=1024)
 def BookSerializers(books):
+
+    #for book in models.Book.objects.all():
+    #    book.delete()
+
+    # f = open('api/books.csv', 'r')
+    # for l in f.readlines():
+    #     id, name, authior, sity, publishing, year, description, censorship, _ = l.split('%')
+    #     models.Book(id=id, name=name, authior=authior, sity=sity, publishing=publishing, year=year, description=description, censorship=censorship).save()
+    #     print(name)
+    # f.close()
+
     result = []
     for book in books:
         result.append({

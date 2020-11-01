@@ -6,8 +6,10 @@ from django.views.decorators.cache import cache_page
 
 import api.models as models
 import api.serializers as serializers
+
 import api.predict as predict
-import api.predict_events as predict_events
+import api.predict_events as
+import api.predict_books as predict_books
 
 
 class OrganizationView(viewsets.ViewSet):
@@ -62,25 +64,48 @@ class PredictGroupsView(viewsets.ViewSet):
         return Response(result)
 
 
-class PredictEventView(viewsets.ViewSet):
+class PredictBookssView(viewsets.ViewSet):
+    
     def all(self, request):
         ids = list(map(int, request.GET.get('likes').split(' ')))
         result = []
         for id in ids:
-            index = predict_events.meropr[predict_events.meropr['id'] == id].index
-            tmp = predict_events.cosine_sim[index]
+            index = predict_books.books[predict_books.books['doc_id'] == id].index
+            tmp = predict_books.cosine_sim[index]
             if not len(tmp):
                 continue
             similar_movies = list(enumerate(tmp[0]))
             sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
-
             element = sorted_similar_movies[0]
-
-            id_yslygi = int(predict_events.meropr.iloc[element[0]]['id'])
-            event = models.Event.objects.filter(id=id_yslygi)
-
-            s = serializers.EventSerializers(event)[0]
+            
+            id_yslygi = int(predict_books.books.iloc[element[0]]['doc_id'])
+            book = models.Book.objects.filter(id=id_yslygi)
+            s = serializers.BookSerializers(book)[0]
             if s not in result:
                 result.append(s)
-
+                
         return Response(result)
+
+
+class PredictEventView(viewsets.ViewSet):
+    def all(self, request):
+        ids = list(map(int, request.GET.get('likes').split(' ')))
+         result = []
+         for id in ids:
+             index = predict_events.meropr[predict_events.meropr['id'] == id].index
+             tmp = predict_events.cosine_sim[index]
+             if not len(tmp):
+                 continue
+             similar_movies = list(enumerate(tmp[0]))
+             sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
+ 
+             element = sorted_similar_movies[0]
+ 
+             id_yslygi = int(predict_events.meropr.iloc[element[0]]['id'])
+             event = models.Event.objects.filter(id=id_yslygi)
+ 
+             s = serializers.EventSerializers(event)[0]
+             if s not in result:
+                 result.append(s)
+ 
+         return Response(result)
