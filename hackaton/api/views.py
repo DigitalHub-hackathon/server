@@ -7,6 +7,7 @@ from django.views.decorators.cache import cache_page
 import api.models as models
 import api.serializers as serializers
 import api.predict as predict
+import api.predict_events as predict_events
 
 
 class OrganizationView(viewsets.ViewSet):
@@ -43,9 +44,30 @@ class PredictGroupsView(viewsets.ViewSet):
             similar_movies = list(enumerate(tmp[0]))
             sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
             element = sorted_similar_movies[0]
-            print(element)
             id_yslygi = int(predict.students.iloc[element[0]]['id_услуги'])
             group = models.Group.objects.filter(id=id_yslygi)
             result += serializers.GroupSerializers(group)
+
+        return Response(result)
+
+
+class PredictEventView(viewsets.ViewSet):
+    
+    def all(self, request):
+        ids = list(map(int, request.GET.get('likes').split(' ')))
+        result = []
+        for id in ids:
+            index = predict_events.meropr[predict_events.meropr['id'] == id].index
+            tmp = predict_events.cosine_sim[index]
+            print(index, '--------------')
+            if not len(tmp):
+                continue
+            similar_movies = list(enumerate(tmp[0]))
+            sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
+            element = sorted_similar_movies[0]
+
+            id_yslygi = int(predict_events.meropr.iloc[element[0]]['id'])
+            event = models.Event.objects.filter(id=id)
+            result += serializers.EventSerializers(event)
 
         return Response(result)
