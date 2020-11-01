@@ -65,3 +65,21 @@ class Event(models.Model):
     class Meta:
         verbose_name = u'Мероприятие'
         verbose_name_plural = u'Мероприятия'
+
+
+class Book(models.Model):
+    id = models.IntegerField(verbose_name='id', primary_key=True)
+    name = models.TextField(verbose_name='Название')
+    authior = models.TextField(verbose_name='Автор')
+    sity = models.TextField(verbose_name='Город')
+    publishing = models.TextField(verbose_name='Издательство')
+    year = models.TextField(verbose_name='Год')
+    description = models.TextField(verbose_name='Описание')
+    censorship = models.TextField(verbose_name='Возрастной ценз')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = u'Книга'
+        verbose_name_plural = u'Книги'

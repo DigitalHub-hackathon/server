@@ -31,6 +31,13 @@ class EventView(viewsets.ViewSet):
         return Response(serializers.EventSerializers(queryset))
 
 
+class BookView(viewsets.ViewSet):
+    @method_decorator(cache_page(60*60*2))
+    def all(self, request, page):
+        queryset = models.Book.objects.all()[page*100:(page+1)*100]
+        return Response(serializers.BookSerializers(queryset))
+
+
 class PredictGroupsView(viewsets.ViewSet):
     
     def all(self, request):

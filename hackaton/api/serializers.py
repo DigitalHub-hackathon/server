@@ -23,6 +23,23 @@ def OrganizationSerializers(organizations):
 
 
 @lru_cache(maxsize=1024)
+def BookSerializers(books):
+    result = []
+    for book in books:
+        result.append({
+            'id': book.id,
+            'name': book.name,
+            'authior': book.authior,
+            'sity': book.sity,
+            'publishing': book.publishing,
+            'year': book.year,
+            'description': book.description,
+            'censorship': book.censorship
+        })
+    return result
+
+
+@lru_cache(maxsize=1024)
 def GroupSerializers(groups):
 
     #f = open('api/k.csv', 'r')
