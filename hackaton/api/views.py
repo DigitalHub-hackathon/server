@@ -39,7 +39,6 @@ class PredictGroupsView(viewsets.ViewSet):
         for id in ids:
             index = predict.students[predict.students['id_услуги'] == id].index
             tmp = predict.cosine_sim[index]
-            print(tmp)
             if not len(tmp):
                 continue
             similar_movies = list(enumerate(tmp[0]))
