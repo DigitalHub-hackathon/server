@@ -39,6 +39,7 @@ class PredictGroupsView(viewsets.ViewSet):
         for id in ids:
             index = predict.students[predict.students['id_услуги'] == id].index
             tmp = predict.cosine_sim[index]
+            print(tmp)
             if not len(tmp):
                 continue
             similar_movies = list(enumerate(tmp[0]))
@@ -52,14 +53,12 @@ class PredictGroupsView(viewsets.ViewSet):
 
 
 class PredictEventView(viewsets.ViewSet):
-    
     def all(self, request):
         ids = list(map(int, request.GET.get('likes').split(' ')))
         result = []
         for id in ids:
             index = predict_events.meropr[predict_events.meropr['id'] == id].index
             tmp = predict_events.cosine_sim[index]
-            print(index, '--------------')
             if not len(tmp):
                 continue
             similar_movies = list(enumerate(tmp[0]))
@@ -67,7 +66,7 @@ class PredictEventView(viewsets.ViewSet):
             element = sorted_similar_movies[0]
 
             id_yslygi = int(predict_events.meropr.iloc[element[0]]['id'])
-            event = models.Event.objects.filter(id=id)
+            event = models.Event.objects.filter(id=id_yslygi)
             result += serializers.EventSerializers(event)
 
         return Response(result)
