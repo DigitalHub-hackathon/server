@@ -37,7 +37,10 @@ class PredictGroupsView(viewsets.ViewSet):
         result = []
         for id in ids:
             index = predict.students[predict.students['id_услуги'] == id].index
-            similar_movies = list(enumerate(predict.cosine_sim[index][0]))
+            tmp = predict.cosine_sim[index]
+            if not len(tmp):
+                continue
+            similar_movies = list(enumerate(tmp[0]))
             sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
             element = sorted_similar_movies[0]
             print(element)
